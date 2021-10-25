@@ -1,0 +1,50 @@
+*.pyc
+__pycache__
+env
+.DS_Store
+staticfiles
+my-db
+.history
+.idea
+*.log
+pm_main_server/core/Access/access.xml
+
+pm_main_server/logs
+pm_main_server/services_main_server/Access/access_data.py
+scriptsForClient/forClients
+scriptsForClient/*.zip
+scriptsForClient/*.exe
+softDistributes
+
+pm_main_server/celerybeat-schedule.bak
+pm_main_server/celerybeat-schedule.dat
+pm_main_server/celerybeat-schedule.dir
+pm_main_server/celerybeat.pid
+
+# UI
+# dependencies
+pm_main_server/pm_ui/node_modules
+pm_main_server/pm_ui/public
+pm_main_server/pm_ui/.pnp
+pm_main_server/pm_ui/.pnp.js
+
+# testing
+pm_main_server/pm_ui/coverage
+
+# production
+pm_main_server/pm_ui/build
+
+# misc
+pm_main_server/pm_ui/.DS_Store
+pm_main_server/pm_ui/.env.local
+pm_main_server/pm_ui/.env.development.local
+pm_main_server/pm_ui/.env.test.local
+pm_main_server/pm_ui/.env.production.local
+
+pm_main_server/pm_ui/npm-debug.log*
+pm_main_server/pm_ui/yarn-debug.log*
+pm_main_server/pm_ui/yarn-error.log*
+pm_main_server/pm_ui/*.log
+pm_main_server/pm_ui/.idea
+pm_main_server/pm_ui/.history
+

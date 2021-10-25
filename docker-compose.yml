@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  main-server:
+    build: pm_main_server
+    command: /bin/bash /usr/src/app/run-celery-django.sh
+    volumes:
+      - ./pm_main_server:/usr/src/app
+      - ./scriptsForClient:/usr/src/scripts
+      - ../FrontendProject-React/frontend-project-react/build:/usr/src/static
+    depends_on:
+      - redis
+
+
+  functional-server:
+    build: pm_functional_server
+    command: /bin/bash /usr/src/app/run-celery-django.sh
+    volumes:
+      - ./pm_functional_server:/usr/src/app
+      - ./scriptsForClient:/usr/src/scripts
+    depends_on:
+      - redis
+
+
+  dashboard-celery:
+    build: pm_functional_server
+    command:  flower -A functional-server --port=5555 --broker=redis://redis:6379/0
+    ports:
+      - 5555:5555
+    depends_on:
+      - functional-server
+      - redis
+
+
+  redis:
+    image: redis:5-alpine
+
+
+  nginx:
+    build: ./nginx
+    command: nginx
+    volumes:
+      - ./softDistributes:/usr/src/dicstributes
+      - ./scriptsForClient:/usr/src/scripts
+    ports:
+        - 8081:80
+    depends_on:
+        - main-server
+        - functional-server

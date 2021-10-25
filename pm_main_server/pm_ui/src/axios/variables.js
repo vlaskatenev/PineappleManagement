@@ -1,0 +1,8 @@
+export const urlToListComputers = '/list-computers'
+export const urlToFindComputerInAd = '/find-computer-in-ad'
+export const urlToShowProgrammList = '/show-programm-list'
+export const urlToStartInstall = '/start-install'
+export const urlToGetStatusProcess = '/functional/get-status-process'
+export const urlToStartCommandOnClient = '/functional/start-command-tm'
+export const urlToHistoryDetail = '/history-detail'
+export const urlToHistory = '/history-process'
