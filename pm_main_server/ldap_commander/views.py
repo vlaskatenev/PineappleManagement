@@ -22,19 +22,32 @@ class AllComputersFromAD(APIView):
         # формируем список имен ПК в OU. Начало
         # соединяюсь с сервером
         
-        conn = connect_to_ldap_server()
-        if conn:
-            ad_tree = request.data["ad_tree"]
-            # читаю список компов с атрибутом Name
-            conn.search(ad_tree, "(objectClass=computer)", attributes=["Name", "DistinguishedName"])
+        # TODO раскомментировать когда замоканные данные будут не нужны
+        # conn = connect_to_ldap_server()
+        # if conn:
+        #     ad_tree = request.data["ad_tree"]
+        #     # читаю список компов с атрибутом Name
+        #     conn.search(ad_tree, "(objectClass=computer)", attributes=["Name", "DistinguishedName"])
 
-            # создаем список для имен пк, форматируем и добавляем в список
-            array_comp_from_ad = [str(name_pc["Name"]).replace("Name: ", "") for name_pc in conn.entries]
-            array_comp_from_ad.reverse()
-            array_distinguished_name = [str(distinguished_name["DistinguishedName"]).replace("DistinguishedName: ", "") for distinguished_name in conn.entries]
-            array_distinguished_name.reverse()
-            # формируем список имен ПК в OU. Конец
-            return JsonResponse({"data": {"computerName": array_comp_from_ad, "DistinguishedName": array_distinguished_name, "workStatusWithAD": bool(conn)}}, status=200)
+        #     # создаем список для имен пк, форматируем и добавляем в список
+        #     array_comp_from_ad = [str(name_pc["Name"]).replace("Name: ", "") for name_pc in conn.entries]
+        #     array_comp_from_ad.reverse()
+        #     array_distinguished_name = [str(distinguished_name["DistinguishedName"]).replace("DistinguishedName: ", "") for distinguished_name in conn.entries]
+        #     array_distinguished_name.reverse()
+        #     # формируем список имен ПК в OU. Конец
+        #     # return JsonResponse({"data": {"computerName": array_comp_from_ad, "DistinguishedName": array_distinguished_name, "workStatusWithAD": bool(conn)}}, status=200)
+        
+        # удалить нужно этот return
+        return JsonResponse({"data": {
+                "computerName": [
+                    "COMP3"
+                ],
+                "DistinguishedName": [
+                    "CN=COMP3,OU=comps,DC=npr,DC=nornick,DC=ru"
+                ],
+                "workStatusWithAD": True
+            }}, status=200)
+
         return JsonResponse({"data": "Refused connection to AD", "workStatusWithAD": bool(conn)}, status=412)
 
 
