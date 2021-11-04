@@ -113,6 +113,8 @@ class GetStatusCelery(APIView):
         return Response(dict(
             task_id=task_id,
             task_status=task_result.status,
+            # если task_result.status FAILURE то юудет ошибка -
+            # Object of type NotRegistered is not JSON serializable
             task_result=task_result.result
         ))
 
