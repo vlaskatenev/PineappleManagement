@@ -1,1 +1,0 @@
-export const scriptAvarageAllProcessData = 'avarageAllProcessData.ps1'
