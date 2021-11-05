@@ -48,3 +48,4 @@ pm_main_server/pm_ui/*.log
 pm_main_server/pm_ui/.idea
 pm_main_server/pm_ui/.history
 
+node_modules
