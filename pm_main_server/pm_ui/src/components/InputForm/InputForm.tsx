@@ -1,4 +1,5 @@
 import React from 'react'
+import {Button} from 'react-bootstrap'
 import './InputForm.css'
 
 //@ts-ignore
@@ -30,10 +31,4 @@ const Input = React.forwardRef((props, ref) => {
     return <input type={props.type} className="input" ref={ref} />
 })
 
-const button = (
-    <div>
-        <button type="submit" className="button">
-            <i className="material-icons">flip_camera_android</i>
-        </button>
-    </div>
-)
+const button = <Button type="submit">Button</Button>

@@ -1,9 +1,10 @@
 import React from 'react'
+import {useForm, FormProvider} from 'react-hook-form'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import RenderPopUpContex from './components/PopUp/PopUpContex'
 import History from './containers/History/History'
 import InstallSoft from './containers/InstallSoft/InstallSoft'
 import Layout from './hoc/Layout/Layout'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
     const routes = (
@@ -14,11 +15,13 @@ function App() {
         </Switch>
     )
 
+    const methods = useForm()
+
     return (
         <React.StrictMode>
-            <RenderPopUpContex>
+            <FormProvider {...methods}>
                 <Layout>{routes}</Layout>
-            </RenderPopUpContex>
+            </FormProvider>
         </React.StrictMode>
     )
 }

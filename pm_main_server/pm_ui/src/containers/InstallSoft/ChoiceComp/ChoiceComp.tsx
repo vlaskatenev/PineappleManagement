@@ -1,58 +1,53 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import './ChoiceComp.css'
-import {LoadingProcess} from '../../../components/LoadingProcess/LoadingProcess'
+import {useFormContext} from 'react-hook-form'
+import {SpinnerLoading} from '../../../components/SpinnerLoading/SpinnerLoading'
+import {EModalInstallSoft} from '../../consts'
 import {changeStateForMainState} from '../pure.functions'
-import {getListNamePc} from './axiosChoiceComp'
+import {useGetListNamePc} from './axiosChoiceComp'
 
 //@ts-ignore
-export const ChoiceComp = ({modalActive, setModalActive, setChoiceData}) => {
-    const [dataFromAD, setDataFronAD] = useState(false)
-    const [distinguishedName, setDistinguishedName] = useState([])
-    const [computer_name, setComputerNameList] = useState([])
+export const ChoiceComp = ({modalActive}) => {
+    const {watch, setValue} = useFormContext()
+    const {isFetching, data} = useGetListNamePc()
 
-    useEffect(() => {
-        getListNamePc().then((listNames) => {
-            setDataFronAD(listNames)
-        })
-    }, [])
+    const distinguishedName = watch('distinguishedName')
+    const computer_name = watch('computer_name')
 
-    if (modalActive !== 1) return null
+    if (modalActive !== EModalInstallSoft.PC_NAME) return null
 
     return (
         <div>
-            <h3>Выбери ПК</h3>
-            <LoadingProcess loading={dataFromAD}>
-                {!!dataFromAD &&
-                    //@ts-ignore
-                    dataFromAD.computerName.map((compName, index) => (
-                        <p key={index}>
-                            <input
-                                onClick={(e) =>
-                                    changeStateForMainState(
-                                        //@ts-ignore
-                                        e.target.dataset,
-                                        [distinguishedName, computer_name],
-                                        [setDistinguishedName, setComputerNameList]
-                                    )
-                                }
-                                type="checkbox"
-                                //@ts-ignore
-                                data-distinguishedname={dataFromAD.DistinguishedName[index]}
-                                //@ts-ignore
-                                data-compname={dataFromAD.computerName[index]}
-                            />
-                            {compName}
-                        </p>
-                    ))}
-            </LoadingProcess>
-            <button
-                onClick={() => {
-                    setChoiceData({distinguishedName, computer_name})
-                    setModalActive(2)
-                }}
-            >
-                К выбору софта
-            </button>
+            {isFetching ? (
+                <SpinnerLoading />
+            ) : (
+                //@ts-ignore
+                data.computerName.map((compName, index) => (
+                    <p key={index}>
+                        <input
+                            onClick={(e) =>
+                                changeStateForMainState(
+                                    //@ts-ignore
+                                    e.target.dataset,
+                                    [distinguishedName, computer_name],
+                                    [
+                                        (distinguishedName: any) =>
+                                            setValue('distinguishedName', distinguishedName),
+                                        (computer_name: any) =>
+                                            setValue('computer_name', computer_name),
+                                    ]
+                                )
+                            }
+                            type="checkbox"
+                            //@ts-ignore
+                            data-distinguishedname={data.DistinguishedName[index]}
+                            //@ts-ignore
+                            data-compname={data.computerName[index]}
+                        />
+                        {compName}
+                    </p>
+                ))
+            )}
         </div>
     )
 }

@@ -17,8 +17,6 @@ export const listProgramm = async (setModalActive, setobjFromAD) => {
 }
 
 //@ts-ignore
-export const addedToGroupAD = async (setModalActive, toogle, objectToInstallSoft) => {
+export const addedToGroupAD = async (objectToInstallSoft) => {
     const data = await toAddedToGroupAD(objectToInstallSoft)
-    setModalActive(0)
-    toogle(false)
 }

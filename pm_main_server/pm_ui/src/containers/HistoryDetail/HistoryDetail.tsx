@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './HistoryDetail.css'
 import {useEffect} from 'react'
 import {LoadingProcess} from '../../components/LoadingProcess/LoadingProcess'
-import {Table} from '../../components/Table/Table'
+import {TableComponent} from '../../components/Table/Table'
 import {historyDetailData} from './axiosFunction'
 
 //@ts-ignore
@@ -18,7 +18,7 @@ const HistoryDetail = (props) => {
     return (
         <div className="HistoryDetail">
             <LoadingProcess loading={detailData}>
-                <Table
+                <TableComponent
                     nameTable={[
                         'date_time',
                         'computer_name',

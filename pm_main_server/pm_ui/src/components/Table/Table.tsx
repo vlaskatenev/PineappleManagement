@@ -7,16 +7,16 @@ import './Table.css'
     content={this.props.historyList}
     keysObj={['computer_name', 'events_id', this.AddTagToTable.bind(this), 'date_time']} /> */
 //@ts-ignore
-export const Table = (props) => {
+export const TableComponent = (props) => {
     return (
         <div>
-            <table className="Table">
+            <table className="TableComponent">
                 <tbody>
                     <TableName nameTable={props.nameTable} />
                     <ContentTable
                         content={props.content}
                         keysObj={props.keysObj}
-                        additionalRow={props.additionalRow}
+                        // additionalRow={props.additionalRow}
                     />
                 </tbody>
             </table>
@@ -64,22 +64,13 @@ const AdditionalRow = ({additionalRow}) => {
 }
 
 //@ts-ignore
-const ContentTable = ({content, keysObj, additionalRow}) => {
+const ContentTable = ({content, keysObj}) => {
     //@ts-ignore
-    return content.map((el, i) => {
-        console.log('i: ', i)
-        // if (i === additionalRow[0]) {
-        //     return <AdditionalRow additionalRow={additionalRow} />
-
-        // } else {
-        console.log('el: ', el)
-        return (
-            <tr key={i}>
-                <RowTable keysObj={keysObj} elem={el} />
-            </tr>
-        )
-        // }
-    })
+    return content.map((el, i) => (
+        <tr key={i}>
+            <RowTable keysObj={keysObj} elem={el} />
+        </tr>
+    ))
 }
 
 //@ts-ignore

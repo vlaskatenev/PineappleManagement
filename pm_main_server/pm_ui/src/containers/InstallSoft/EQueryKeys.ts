@@ -1,0 +1,5 @@
+export enum EQueryKeys {
+    LIST_PROGRAMM = 'LIST_PROGRAMM',
+    LIST_NAME_PC = 'LIST_NAME_PC',
+    HISTORY_DATA = 'HISTORY_DATA',
+}
