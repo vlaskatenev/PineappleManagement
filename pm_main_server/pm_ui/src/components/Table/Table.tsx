@@ -1,77 +1,31 @@
 import React from 'react'
-import './Table.css'
-// import { usePopUp } from '../PopUp/PopUpContex'
+import {Table} from 'react-bootstrap'
 
 /* <Table 
     nameTable={['Имя ПК', 'Статус', '', 'Дата']}
     content={this.props.historyList}
     keysObj={['computer_name', 'events_id', this.AddTagToTable.bind(this), 'date_time']} /> */
 //@ts-ignore
-export const TableComponent = (props) => {
-    return (
-        <div>
-            <table className="TableComponent">
-                <tbody>
-                    <TableName nameTable={props.nameTable} />
-                    <ContentTable
-                        content={props.content}
-                        keysObj={props.keysObj}
-                        // additionalRow={props.additionalRow}
-                    />
-                </tbody>
-            </table>
-        </div>
-    )
-}
-
-//@ts-ignore
-const TableName = ({nameTable}) => {
-    return (
-        <tr>
-            {/* @ts-ignore */}
-            {nameTable.map((name, index) => (
-                <th key={index}>{name}</th>
-            ))}
-        </tr>
-    )
-}
-
-{
-    /* <tr className="descriptionPercent">
-    <th className="description"></th>
-    <th className="description">{this.props.average.averageCpu}%</th>
-    <th className="description">{this.props.average.averageRam}%</th>
-    <th className="description">{this.props.average.averageDisc}%</th>
-    <th className="description">{this.props.average.fullyNetworkSpeed}%</th>
-</tr> */
-}
-//@ts-ignore
-const AdditionalRow = ({additionalRow}) => {
-    // const additionalRow = [index ,'', average.averageCpu, average.averageRam, average.averageDisc, fullyNetworkSpeed]
-    return (
-        <tr>
-            {/* @ts-ignore */}
-            {additionalRow.filter((name, index) => {
-                if (index === 0) {
-                    return false
-                } else {
-                    console.log('index !== 0: ', index)
-                    return <td key={index}>{index}</td>
-                }
-            })}{' '}
-        </tr>
-    )
-}
-
-//@ts-ignore
-const ContentTable = ({content, keysObj}) => {
-    //@ts-ignore
-    return content.map((el, i) => (
-        <tr key={i}>
-            <RowTable keysObj={keysObj} elem={el} />
-        </tr>
-    ))
-}
+export const TableComponent = ({nameTable, content, keysObj}) => (
+    <div>
+        <Table responsive>
+            <tbody>
+                <tr>
+                    {/* @ts-ignore */}
+                    {nameTable.map((name, index) => (
+                        <th key={index}>{name}</th>
+                    ))}
+                </tr>
+                {/* @ts-ignore */}
+                {content.map((el, i) => (
+                    <tr key={i}>
+                        <RowTable keysObj={keysObj} elem={el} />
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
+    </div>
+)
 
 //@ts-ignore
 const RowTable = ({keysObj, elem}) => {

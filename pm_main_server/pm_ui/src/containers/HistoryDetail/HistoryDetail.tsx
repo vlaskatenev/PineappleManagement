@@ -1,23 +1,18 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './HistoryDetail.css'
-import {useEffect} from 'react'
-import {LoadingProcess} from '../../components/LoadingProcess/LoadingProcess'
+import {SpinnerLoading} from '../../components/SpinnerLoading/SpinnerLoading'
 import {TableComponent} from '../../components/Table/Table'
-import {historyDetailData} from './axiosFunction'
+import {useGetHistoryDetailData} from './axiosFunction'
 
 //@ts-ignore
-const HistoryDetail = (props) => {
-    const [detailData, setDetailData] = useState(false)
-
-    useEffect(() => {
-        historyDetailData(props.id).then((data) => {
-            setDetailData(data)
-        })
-    }, [])
+const HistoryDetail = ({id}) => {
+    const {isFetching, data} = useGetHistoryDetailData(id)
 
     return (
         <div className="HistoryDetail">
-            <LoadingProcess loading={detailData}>
+            {isFetching ? (
+                <SpinnerLoading />
+            ) : (
                 <TableComponent
                     nameTable={[
                         'date_time',
@@ -26,7 +21,7 @@ const HistoryDetail = (props) => {
                         'events_id',
                         'result_work',
                     ]}
-                    content={detailData}
+                    content={data}
                     keysObj={[
                         'date_time',
                         'computer_name',
@@ -35,7 +30,7 @@ const HistoryDetail = (props) => {
                         'result_work',
                     ]}
                 />
-            </LoadingProcess>
+            )}
         </div>
     )
 }
