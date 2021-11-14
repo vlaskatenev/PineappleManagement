@@ -6,8 +6,11 @@ import {EModalInstallSoft} from '../../consts'
 import {changeStateForMainState} from '../pure.functions'
 import {useGetListNamePc} from './axiosChoiceComp'
 
-//@ts-ignore
-export const ChoiceComp = ({modalActive}) => {
+interface IProps {
+    modalActive: EModalInstallSoft
+}
+
+export const ChoiceComp = ({modalActive}: IProps) => {
     const {watch, setValue} = useFormContext()
     const {isFetching, data} = useGetListNamePc()
 
@@ -16,33 +19,35 @@ export const ChoiceComp = ({modalActive}) => {
 
     if (modalActive !== EModalInstallSoft.PC_NAME) return null
 
+    const listNamePc = data ?? {
+        DistinguishedName: [],
+        computerName: [],
+    }
+
     return (
         <div>
             {isFetching ? (
                 <SpinnerLoading />
             ) : (
-                //@ts-ignore
-                data.computerName.map((compName, index) => (
+                listNamePc.computerName.map((compName, index) => (
                     <p key={index}>
                         <input
-                            onClick={(e) =>
+                            onClick={(e) => {
                                 changeStateForMainState(
                                     //@ts-ignore
                                     e.target.dataset,
                                     [distinguishedName, computer_name],
                                     [
-                                        (distinguishedName: any) =>
+                                        (distinguishedName: string) =>
                                             setValue('distinguishedName', distinguishedName),
-                                        (computer_name: any) =>
+                                        (computer_name: string) =>
                                             setValue('computer_name', computer_name),
                                     ]
                                 )
-                            }
+                            }}
                             type="checkbox"
-                            //@ts-ignore
-                            data-distinguishedname={data.DistinguishedName[index]}
-                            //@ts-ignore
-                            data-compname={data.computerName[index]}
+                            data-distinguishedname={listNamePc.DistinguishedName[index]}
+                            data-compname={listNamePc.computerName[index]}
                         />
                         {compName}
                     </p>

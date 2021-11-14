@@ -1,13 +1,17 @@
 import React from 'react'
 import './ChoiceProgramm.css'
 import {useFormContext} from 'react-hook-form'
+import {IListProgramm} from '../../../axios/axiosMethods'
 import {SpinnerLoading} from '../../../components/SpinnerLoading/SpinnerLoading'
 import {EModalInstallSoft} from '../../consts'
 import {changeStateForMainState} from '../pure.functions'
 import {useGetListProgramm} from './axiosChoiceProgramm'
 
-//@ts-ignore
-export const ChoiceProgramm = ({modalActive}) => {
+interface IProps {
+    modalActive: EModalInstallSoft
+}
+
+export const ChoiceProgramm = ({modalActive}: IProps) => {
     const {watch, setValue} = useFormContext()
 
     const {isFetching, data} = useGetListProgramm()
@@ -17,12 +21,14 @@ export const ChoiceProgramm = ({modalActive}) => {
 
     if (modalActive !== EModalInstallSoft.PROG_NAME) return null
 
+    const listProgramm = data ?? []
+
     return (
         <>
             {isFetching ? (
                 <SpinnerLoading />
             ) : (
-                data.map((progObj: any) => (
+                listProgramm.map((progObj: IListProgramm) => (
                     <p key={progObj.id}>
                         <input
                             onClick={(e) => {
@@ -31,8 +37,8 @@ export const ChoiceProgramm = ({modalActive}) => {
                                     e.target.dataset,
                                     [program_id, program_name],
                                     [
-                                        (program_id: any) => setValue('program_id', program_id),
-                                        (program_name: any) =>
+                                        (program_id: string) => setValue('program_id', program_id),
+                                        (program_name: string) =>
                                             setValue('program_name', program_name),
                                     ]
                                 )

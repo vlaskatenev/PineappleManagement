@@ -12,7 +12,8 @@ const getHistoryData = async (data) => {
 
 /**
  * Хук для получения списка заданий по установке софта.
+ * @param {string} data дата
  *
  */
-export const useGetHistoryData = (data: any) =>
+export const useGetHistoryData = (data: string) =>
     useQuery([EQueryKeys.HISTORY_DATA, data], () => getHistoryData(data), {enabled: false})

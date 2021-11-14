@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import './InstallSoft.css'
 import {Button, Modal} from 'react-bootstrap'
 import {useFormContext} from 'react-hook-form'
+import {IAddedToGroupAD} from '../../axios/axiosMethods'
 import InputForm from '../../components/InputForm/InputForm'
 import {EModalInstallSoft} from '../consts'
 import {ChoiceComp} from './ChoiceComp/ChoiceComp'
@@ -9,7 +10,7 @@ import {ChoiceProgramm} from './ChoiceProgramm/ChoiceProgramm'
 import {addedToGroupAD, findComputerInAd} from './axiosFunctions'
 
 const InstallSoft = () => {
-    const [modalActive, setModalActive] = useState(0)
+    const [modalActive, setModalActive] = useState(EModalInstallSoft.MAIN)
     const {watch, reset} = useFormContext()
 
     // TODO Нужно будет этот state убрать когда перепишу функционал поиска по имени ПК
@@ -33,7 +34,7 @@ const InstallSoft = () => {
     const program_id = watch('program_id')
     const program_name = watch('program_name')
 
-    const dataForStartInstall = {
+    const dataForStartInstall: IAddedToGroupAD = {
         distinguishedName,
         computer_name,
         program_id,
@@ -41,20 +42,20 @@ const InstallSoft = () => {
         methodInputnamePc: false,
     }
 
-    const titleForInstallSoft: any = {
+    const titleForInstallSoft = {
         [EModalInstallSoft.MAIN]: null,
         [EModalInstallSoft.PC_NAME]: 'Выбери ПК',
         [EModalInstallSoft.PROG_NAME]: 'Выбери софт',
     }
 
-    const textForInstallSoft: any = {
+    const textForInstallSoft = {
         [EModalInstallSoft.MAIN]: null,
         [EModalInstallSoft.PC_NAME]: 'К выбору софта',
         [EModalInstallSoft.PROG_NAME]: 'Установить',
     }
 
-    const functionForInstallSoft: any = {
-        [EModalInstallSoft.MAIN]: null,
+    const functionForInstallSoft = {
+        [EModalInstallSoft.MAIN]: () => null,
         [EModalInstallSoft.PC_NAME]: () => setModalActive(EModalInstallSoft.PROG_NAME),
         [EModalInstallSoft.PROG_NAME]: () => {
             addedToGroupAD(dataForStartInstall)
@@ -67,7 +68,7 @@ const InstallSoft = () => {
             <div>
                 <p>Введи имя ПК если нужна установка на один компьютер:</p>
             </div>
-
+            {/* TODO Этот инпут скорее всего я удалю */}
             <InputForm
                 type="text"
                 //@ts-ignore

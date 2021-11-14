@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query'
-import {toListNamePc} from '../../../axios/axiosMethods'
+import {IListNamePc, toListNamePc} from '../../../axios/axiosMethods'
 import {EQueryKeys} from '../EQueryKeys'
 
-const getListNamePc = async () => {
+const getListNamePc = async (): Promise<IListNamePc> => {
     const data = await toListNamePc()
     return data.data.data
 }

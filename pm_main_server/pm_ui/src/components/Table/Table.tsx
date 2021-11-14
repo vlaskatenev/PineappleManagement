@@ -1,25 +1,40 @@
 import React from 'react'
 import {Table} from 'react-bootstrap'
+import {GenericObjectType} from '../../containers/consts'
 
-/* <Table 
-    nameTable={['Имя ПК', 'Статус', '', 'Дата']}
-    content={this.props.historyList}
-    keysObj={['computer_name', 'events_id', this.AddTagToTable.bind(this), 'date_time']} /> */
-//@ts-ignore
-export const TableComponent = ({nameTable, content, keysObj}) => (
+interface IPropsTable {
+    titleColumnTable: string[]
+    contentTable: GenericObjectType[]
+    keysObj: string[] | React.ReactNode[]
+}
+
+/**
+ * Крмпонент таблицы
+ *
+ * @param {string[]} titleColumnTable - массив значений заголовков таблицы
+ * @param {GenericObjectType[]} contentTable - массив объектов значений таблицы. Один объект - одна строка таблицы
+ * @param {string[] | React.ReactNode[]} keysObj - массив ключей, которые будут содержимым таблицы. Так же здесь в качестве содержимого можно передать JSX компонент
+ *
+ * @example
+ *  <TableComponent
+ *      titleColumnTable={['Имя ПК', 'Статус', '', 'Дата']}
+ *      contentTable={historyList}
+ *      keysObj={['computer_name', 'events_id', AddTagToTable, 'date_time']}
+ *  />
+ *
+ */
+export const TableComponent = ({titleColumnTable, contentTable, keysObj}: IPropsTable) => (
     <div>
         <Table responsive>
             <tbody>
                 <tr>
-                    {/* @ts-ignore */}
-                    {nameTable.map((name, index) => (
+                    {titleColumnTable.map((name, index) => (
                         <th key={index}>{name}</th>
                     ))}
                 </tr>
-                {/* @ts-ignore */}
-                {content.map((el, i) => (
+                {contentTable.map((titleCell, i) => (
                     <tr key={i}>
-                        <RowTable keysObj={keysObj} elem={el} />
+                        <RowTable keysObj={keysObj} titleCell={titleCell} />
                     </tr>
                 ))}
             </tbody>
@@ -27,25 +42,31 @@ export const TableComponent = ({nameTable, content, keysObj}) => (
     </div>
 )
 
-//@ts-ignore
-const RowTable = ({keysObj, elem}) => {
-    //@ts-ignore
-    return keysObj.map((keys, i) => {
-        if (typeof keys === 'function') {
-            const Component = keys()
-            return (
-                <td key={i}>
-                    <Component elem={elem} />
-                </td>
-            )
-        } else if (typeof keys !== 'string') {
-            const Component = keys
-            return (
-                <td key={i}>
-                    <Component elem={elem} />
-                </td>
-            )
-        }
-        return <td key={i}>{elem[keys]}</td>
-    })
+interface IPropsRowTable {
+    keysObj: string[] | React.ReactNode[]
+    titleCell: GenericObjectType
 }
+
+/**
+ * формируем одну строку таблицы
+ *
+ * @param {string[] | React.ReactNode[]} keysObj массив ключей, которые будут содержимым таблицы. Так же здесь в качестве содержимого можно передать JSX компонент
+ * @param {GenericObjectType} titleCell текст ячейки.
+ *
+ * @example <RowTable keysObj={keysObj} titleCell={titleCell} />
+ */
+const RowTable = ({keysObj, titleCell}: IPropsRowTable) => (
+    <>
+        {keysObj.map((keys, i) => {
+            if (typeof keys === 'function') {
+                const Component = keys
+                return (
+                    <td key={i}>
+                        <Component element={titleCell} />
+                    </td>
+                )
+            }
+            return <td key={i}>{titleCell[keys as string]}</td>
+        })}
+    </>
+)

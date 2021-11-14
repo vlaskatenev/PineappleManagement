@@ -1,14 +1,18 @@
 import {useQuery} from 'react-query'
-import {toListProgramm, toAddedToGroupAD} from '../../../axios/axiosMethods'
+import {
+    toListProgramm,
+    toAddedToGroupAD,
+    IListProgramm,
+    IAddedToGroupAD,
+} from '../../../axios/axiosMethods'
 import {EQueryKeys} from '../EQueryKeys'
 
-export const getListProgramm = async () => {
+export const getListProgramm = async (): Promise<IListProgramm[]> => {
     const data = await toListProgramm()
     return data.data.data
 }
 
-//@ts-ignore
-export const addedToGroupAD = async (objectToInstallSoft) => {
+export const addedToGroupAD = async (objectToInstallSoft: IAddedToGroupAD) => {
     const data = await toAddedToGroupAD(objectToInstallSoft)
 }
 

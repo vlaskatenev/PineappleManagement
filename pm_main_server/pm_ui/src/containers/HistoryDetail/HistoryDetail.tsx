@@ -4,8 +4,11 @@ import {SpinnerLoading} from '../../components/SpinnerLoading/SpinnerLoading'
 import {TableComponent} from '../../components/Table/Table'
 import {useGetHistoryDetailData} from './axiosFunction'
 
-//@ts-ignore
-const HistoryDetail = ({id}) => {
+interface IProps {
+    id: string
+}
+
+const HistoryDetail = ({id}: IProps) => {
     const {isFetching, data} = useGetHistoryDetailData(id)
 
     return (
@@ -14,14 +17,14 @@ const HistoryDetail = ({id}) => {
                 <SpinnerLoading />
             ) : (
                 <TableComponent
-                    nameTable={[
+                    titleColumnTable={[
                         'date_time',
                         'computer_name',
                         'program_id_id',
                         'events_id',
                         'result_work',
                     ]}
-                    content={data}
+                    contentTable={data}
                     keysObj={[
                         'date_time',
                         'computer_name',

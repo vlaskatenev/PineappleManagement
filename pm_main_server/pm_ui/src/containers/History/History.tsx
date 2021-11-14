@@ -8,7 +8,7 @@ import HistoryDetail from '../HistoryDetail/HistoryDetail'
 import {useGetHistoryData} from './axiosFunction'
 
 const History = () => {
-    const [id, setId] = useState(false)
+    const [idTask, setIdTask] = useState('')
     const [modalActive, setModalActive] = useState(false)
     const [selectHistoryData, setSelectHistoryData] = useState('')
     const {isFetching, refetch, data} = useGetHistoryData(selectHistoryData)
@@ -25,26 +25,28 @@ const History = () => {
         }
     }, [selectHistoryData])
 
+    const AddTagToTable = ({element}: {element: {startnumber: string}}) => (
+        <span
+            onClick={() => {
+                setIdTask(element.startnumber)
+                handleClose()
+            }}
+        >
+            Посмотреть лог
+        </span>
+    )
+
     return (
         <div>
             <div className="History">
-                <InputForm
-                    type="date"
-                    //@ts-ignore
-                    handleClickButton={setSelectHistoryData}
-                />
+                <InputForm type="date" handleClickButton={setSelectHistoryData} />
                 {isFetching ? (
                     <SpinnerLoading />
                 ) : (
                     <TableComponent
-                        nameTable={['Имя ПК', 'Статус', '', 'Дата']}
-                        content={historyList}
-                        keysObj={[
-                            'computer_name',
-                            'events_id',
-                            () => addTagToTable(handleClose, setId),
-                            'date_time',
-                        ]}
+                        titleColumnTable={['Имя ПК', 'Статус', '', 'Дата']}
+                        contentTable={historyList}
+                        keysObj={['computer_name', 'events_id', AddTagToTable, 'date_time']}
                     />
                 )}
             </div>
@@ -60,7 +62,7 @@ const History = () => {
                     <Modal.Title>История установки</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <HistoryDetail id={id} />
+                    <HistoryDetail id={idTask} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -73,18 +75,3 @@ const History = () => {
 }
 
 export default History
-
-//@ts-ignore
-const addTagToTable = (toogle, setId) => {
-    //@ts-ignore
-    return ({elem}) => (
-        <span
-            onClick={() => {
-                setId(elem.startnumber)
-                toogle(true)
-            }}
-        >
-            Посмотреть лог
-        </span>
-    )
-}
