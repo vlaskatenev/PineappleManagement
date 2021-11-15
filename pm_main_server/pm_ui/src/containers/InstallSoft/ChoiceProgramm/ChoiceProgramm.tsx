@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {SyntheticEvent} from 'react'
 import './ChoiceProgramm.css'
 import {useFormContext} from 'react-hook-form'
 import {IListProgramm} from '../../../axios/axiosMethods'
@@ -11,6 +11,10 @@ interface IProps {
     modalActive: EModalInstallSoft
 }
 
+/**
+ * Выводит модалку для выбора софта для установки
+ *
+ */
 export const ChoiceProgramm = ({modalActive}: IProps) => {
     const {watch, setValue} = useFormContext()
 
@@ -21,7 +25,21 @@ export const ChoiceProgramm = ({modalActive}: IProps) => {
 
     if (modalActive !== EModalInstallSoft.PROG_NAME) return null
 
-    const listProgramm = data ?? []
+    const listProgramm = data?.data?.data ?? []
+
+    /**
+     * Добавляем в состояние список софта который выбрали
+     *
+     */
+    const handleProgrammName = (event: SyntheticEvent & {target: HTMLInputElement}) =>
+        changeStateForMainState(
+            event.target.dataset,
+            [program_id, program_name],
+            [
+                (program_id: string) => setValue('program_id', program_id),
+                (program_name: string) => setValue('program_name', program_name),
+            ]
+        )
 
     return (
         <>
@@ -31,18 +49,7 @@ export const ChoiceProgramm = ({modalActive}: IProps) => {
                 listProgramm.map((progObj: IListProgramm) => (
                     <p key={progObj.id}>
                         <input
-                            onClick={(e) => {
-                                changeStateForMainState(
-                                    //@ts-ignore
-                                    e.target.dataset,
-                                    [program_id, program_name],
-                                    [
-                                        (program_id: string) => setValue('program_id', program_id),
-                                        (program_name: string) =>
-                                            setValue('program_name', program_name),
-                                    ]
-                                )
-                            }}
+                            onChange={handleProgrammName}
                             type="checkbox"
                             data-progid={progObj.id}
                             data-progname={progObj.short_program_name}

@@ -8,8 +8,14 @@ interface IProps {
     id: string
 }
 
+/**
+ * Компонет показывает детальную информацию по установке
+ *
+ */
 const HistoryDetail = ({id}: IProps) => {
     const {isFetching, data} = useGetHistoryDetailData(id)
+
+    const historyDetailData = data?.data?.data
 
     return (
         <div className="HistoryDetail">
@@ -24,7 +30,7 @@ const HistoryDetail = ({id}: IProps) => {
                         'events_id',
                         'result_work',
                     ]}
-                    contentTable={data}
+                    contentTable={historyDetailData}
                     keysObj={[
                         'date_time',
                         'computer_name',

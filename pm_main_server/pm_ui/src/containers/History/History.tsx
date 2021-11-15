@@ -15,7 +15,7 @@ const History = () => {
 
     const handleClose = () => setModalActive(!modalActive)
 
-    const historyList = data ?? []
+    const historyList = data?.data?.data ?? []
 
     useEffect(() => {
         if (selectHistoryData) {

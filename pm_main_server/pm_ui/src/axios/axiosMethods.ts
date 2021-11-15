@@ -67,7 +67,7 @@ export const toResultCelery = (idProcess: string) => {
  * Функция для получения детальной нформации по выбранному процессц установки
  * @param {number} data id процесса установки по которому необходимо выгрузить полный лог
  */
-export const toHistoryDetailData = (data: number) => {
+export const toHistoryDetailData = (data: number | string) => {
     return axiosPost(urlToHistoryDetail, {
         data,
     })
