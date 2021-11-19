@@ -1,11 +1,11 @@
-.Table {
+.TableComponent {
     border-spacing: 0;
     max-width: 100%;
     padding: 10px;
     margin: auto;
 }
 
-.Table > tbody > tr > th {
+.TableComponent > tbody > tr > th {
     left: 0;
     right: 5px;
     border-bottom: 2px solid #9ea7a9;
@@ -14,7 +14,7 @@
 
 }
 
-.Table tr > td {
+.TableComponent tr > td {
     margin: 10px;
     padding: 10px;
     border-bottom: 2px solid #9ea7a9;
