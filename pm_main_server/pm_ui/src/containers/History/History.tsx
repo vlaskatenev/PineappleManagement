@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import './History.css'
-import {Button, Modal} from 'react-bootstrap'
-import InputForm from '../../components/InputForm/InputForm'
+import {Button, Modal, InputGroup, FormControl} from 'react-bootstrap'
 import {SpinnerLoading} from '../../components/SpinnerLoading/SpinnerLoading'
 import {TableComponent} from '../../components/Table/Table'
 import HistoryDetail from '../HistoryDetail/HistoryDetail'
@@ -39,7 +38,13 @@ const History = () => {
     return (
         <div>
             <div className="History">
-                <InputForm type="date" handleClickButton={setSelectHistoryData} />
+                <InputGroup className="mb-3">
+                    <FormControl
+                        placeholder="Введи имя ПК"
+                        type="date"
+                        onChange={(event) => setSelectHistoryData(event.target.value)}
+                    />
+                </InputGroup>
                 {isFetching ? (
                     <SpinnerLoading />
                 ) : (

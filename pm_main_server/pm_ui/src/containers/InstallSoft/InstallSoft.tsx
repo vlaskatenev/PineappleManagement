@@ -1,22 +1,21 @@
+import {isEmpty} from 'lodash'
 import React, {useState, useEffect} from 'react'
 import './InstallSoft.css'
-import {Button, Modal} from 'react-bootstrap'
+import {Button, Modal, InputGroup, FormControl} from 'react-bootstrap'
 import {useFormContext} from 'react-hook-form'
-import {IAddedToGroupAD} from '../../axios/axiosMethods'
-import InputForm from '../../components/InputForm/InputForm'
+import {IAddedToGroupAD, toAddedToGroupAD} from '../../axios/axiosMethods'
 import {EModalInstallSoft} from '../consts'
 import {ChoiceComp} from './ChoiceComp/ChoiceComp'
 import {ChoiceProgramm} from './ChoiceProgramm/ChoiceProgramm'
-import {addedToGroupAD, findComputerInAd} from './axiosFunctions'
+import {useFindComputerInAd} from './axiosFunctions'
 
 const InstallSoft = () => {
     const [modalActive, setModalActive] = useState(EModalInstallSoft.MAIN)
+    const [inputComputerName, setInputComputerName] = useState('')
     const {watch, reset} = useFormContext()
 
-    // TODO Нужно будет этот state убрать когда перепишу функционал поиска по имени ПК
-    const [choiceData, setChoiceData] = useState({})
-
     const handleClose = () => setModalActive(EModalInstallSoft.MAIN)
+    const {refetch, data} = useFindComputerInAd(inputComputerName)
 
     useEffect(() => {
         if (modalActive === EModalInstallSoft.MAIN) {
@@ -28,6 +27,8 @@ const InstallSoft = () => {
             })
         }
     }, [modalActive])
+
+    const computerNameAfterPutInput = data?.data?.data ?? {}
 
     const distinguishedName = watch('distinguishedName')
     const computer_name = watch('computer_name')
@@ -58,9 +59,20 @@ const InstallSoft = () => {
         [EModalInstallSoft.MAIN]: () => null,
         [EModalInstallSoft.PC_NAME]: () => setModalActive(EModalInstallSoft.PROG_NAME),
         [EModalInstallSoft.PROG_NAME]: () => {
-            addedToGroupAD(dataForStartInstall)
+            toAddedToGroupAD(dataForStartInstall)
             setModalActive(EModalInstallSoft.MAIN)
         },
+    }
+
+    const putComputerNameInput = () => {
+        refetch()
+        if (!isEmpty(computerNameAfterPutInput)) {
+            reset({
+                distinguishedName: [computerNameAfterPutInput.distinguishedname],
+                computer_name: [computerNameAfterPutInput.compname],
+            })
+            setModalActive(EModalInstallSoft.PROG_NAME)
+        }
     }
 
     return (
@@ -68,19 +80,20 @@ const InstallSoft = () => {
             <div>
                 <p>Введи имя ПК если нужна установка на один компьютер:</p>
             </div>
-            {/* TODO Этот инпут скорее всего я удалю */}
-            <InputForm
-                type="text"
-                //@ts-ignore
-                handleClickButton={(valueText) => {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                    //@ts-ignore
-                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                    if (findComputerInAd(setChoiceData, valueText)) {
-                        setModalActive(EModalInstallSoft.PROG_NAME)
-                    }
-                }}
-            />
+
+            <InputGroup className="mb-3">
+                <FormControl
+                    placeholder="Введи имя ПК"
+                    onChange={(event) => setInputComputerName(event.target.value)}
+                />
+                <Button
+                    variant="outline-secondary"
+                    id="button-addon2"
+                    onClick={putComputerNameInput}
+                >
+                    Выбрать ПК
+                </Button>
+            </InputGroup>
 
             <Button
                 variant="primary"

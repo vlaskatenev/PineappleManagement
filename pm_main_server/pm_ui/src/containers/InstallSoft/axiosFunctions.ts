@@ -1,13 +1,12 @@
-import {toFindComputerInAd, toAddedToGroupAD, IAddedToGroupAD} from '../../axios/axiosMethods'
+import {useQuery} from 'react-query'
+import {toFindComputerInAd} from '../../axios/axiosMethods'
+import {EQueryKeys} from './EQueryKeys'
 
-//@ts-ignore
-export const findComputerInAd = async (setObjForMainServer, computerName) => {
-    const data = await toFindComputerInAd(computerName)
-    const objFromAd = data.data.data
-    setObjForMainServer(objFromAd)
-    return objFromAd.adMember
-}
-
-export const addedToGroupAD = async (objectToInstallSoft: IAddedToGroupAD) => {
-    const data = await toAddedToGroupAD(objectToInstallSoft)
-}
+/**
+ * Хук для поиска компьютера в AD.
+ *
+ */
+export const useFindComputerInAd = (computerName: string) =>
+    useQuery([EQueryKeys.FIND_IN_AD, computerName], () => toFindComputerInAd(computerName), {
+        enabled: false,
+    })

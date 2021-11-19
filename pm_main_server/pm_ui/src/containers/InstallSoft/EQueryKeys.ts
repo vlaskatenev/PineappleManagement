@@ -3,4 +3,5 @@ export enum EQueryKeys {
     LIST_NAME_PC = 'LIST_NAME_PC',
     HISTORY_DATA = 'HISTORY_DATA',
     HISTORY_DETAIL_DATA = 'HISTORY_DETAIL_DATA',
+    FIND_IN_AD = 'FIND_IN_AD',
 }
